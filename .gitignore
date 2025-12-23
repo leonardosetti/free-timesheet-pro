@@ -1,0 +1,240 @@
+# ================================
+# FREE TIMESHEET PRO v2.2 - FOSS
+# Performance | Security | Docker
+# ================================
+
+# ================================
+# 1. NODE.JS / NPM
+# ================================
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Lockfiles (commit sempre!)
+# !backend/package-lock.json
+# !frontend/package-lock.json
+
+# Build outputs
+backend/dist/
+backend/build/
+frontend/dist/
+frontend/build/
+*.tgz
+
+# TypeScript
+*.tsbuildinfo
+.next/
+
+# ================================
+# 2. DOCKER & CONTAINERS
+# ================================
+# Docker
+.dockerignore
+Dockerfile.*.local
+.dockerignore.bkp
+!Dockerfile*
+
+# Docker volumes & cache
+.docker/
+.git/docker/
+.vscode/docker/
+docker-compose.override.yml
+docker-compose.override.*.yml
+
+# Docker build cache
+.docker-build/
+buildkit/
+
+# ================================
+# 3. DATABASE & DATA
+# ================================
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.sql.gz
+*.sql.bak
+
+# Postgres local
+postgresql_data/
+postgres_data/
+pgdata/
+*.pg_dump
+
+# Redis
+redis/
+dump.rdb
+nodes.conf
+*.rdb
+
+# ================================
+# 4. IDE / EDITOR
+# ================================
+# VS Code
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+!.vscode/extensions.recommendations.json
+!.vscode/launch.*.json
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+out/
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# ================================
+# 5. SISTEMA / OS
+# ================================
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ================================
+# 6. LOGS & TEMP
+# ================================
+logs/
+*.log
+npm-debug.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+pids
+*.seed
+*.pid
+.env.*.local
+
+# ================================
+# 7. CI/CD & TESTING
+# ================================
+coverage/
+.nyc_output
+.coverage/
+jest-*.json
+jest.config.*.js
+testem.log
+test-results/
+.nyc_output/
+.nyc_output/node_modules
+
+# Coverage reports
+coverage/
+.nyc_output
+coverage-*/
+reports/
+test-results/
+
+# ================================
+# 8. SECURITY & SECRETS
+# ================================
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+!.env.example
+!.env.sample
+
+# API Keys
+*.pem
+*.key
+*.cert
+*.csr
+*.crt
+sslcert/
+sslkey/
+
+# Tokens
+tokens/
+*.token
+
+# ================================
+# 9. BACKEND ESPECÍFICO
+# ================================
+backend/.env
+backend/node_modules/
+backend/dist/
+backend/coverage/
+backend/logs/
+
+# ================================
+# 10. FRONTEND ESPECÍFICO
+# ================================
+frontend/.env
+frontend/.env.local
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ================================
+# 11. DATABASE MIGRATIONS
+# ================================
+database/migrations/
+database/seeds/
+database/backups/
+database/dumps/
+
+# ================================
+# 12. DOCS & REPORTS
+# ================================
+docs/_build/
+mkdocs/docs/.vuepress/dist
+mkdocs/build/
+*.pdf
+
+# ================================
+# 13. CACHE & ARTIFACTS
+# ================================
+.cache/
+.eslintcache
+.prettierrc.cache
+
+# ================================
+# 14. OS-SPECIFIC (WSL/Arch)
+# ================================
+# WSL
+.wslconfig
+.vscode-wsl.code-workspace
+
+# Arch Linux
+.pacnew
+.pacsave
+.pacorig
+
+# ================================
+# 15. FOSS COMMUNITY FILES (COMMIT)
+# ================================
+!LICENSE
+!README.md
+!docker-compose.*.yml
+!.env.example
+!.github/
+!.vscode/extensions.recommendations.json
