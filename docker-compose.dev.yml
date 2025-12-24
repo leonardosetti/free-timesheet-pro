@@ -1,0 +1,55 @@
+services:
+  database:
+    image: timescale/timescaledb:latest-pg15
+    container_name: timesheet_db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: timesheet_pro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devpass123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: pg_isready -U postgres -d timesheet_pro
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: timesheet_backend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      DB_HOST: database
+      DB_PORT: 5432
+      DB_NAME: timesheet_pro
+      DB_USER: postgres
+      DB_PASSWORD: devpass123
+      JWT_SECRET: dev_jwt_secret_32_chars_minimum_2025_dev_only
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - database
+
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    container_name: timesheet_frontend
+    ports:
+      - "8080:5173"
+    environment:
+      VITE_API_URL: http://host.docker.internal:3000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

@@ -1,0 +1,112 @@
+name: 🤖 CI - Free Timesheet Pro FOSS
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ci-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+  POSTGRES_PASSWORD: testpass123
+
+jobs:
+  test-backend:
+    name: 🧪 Backend Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg15
+        env:
+          POSTGRES_DB: timesheet_pro
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+
+    - name: 📦 Backend Install
+      working-directory: ./backend
+      run: |
+        npm ci --frozen-lockfile
+
+    - name: 🧪 Backend Tests
+      working-directory: ./backend
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_NAME: timesheet_pro
+        DB_USER: postgres
+        DB_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+      run: |
+        npm test -- --coverage
+
+    - name: 📊 Backend Coverage
+      uses: codecov/codecov-action@v4
+      with:
+        directory: ./backend/coverage
+
+  test-frontend:
+    name: 🌐 Frontend Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: 📦 Frontend Install
+      working-directory: ./frontend
+      run: |
+        npm ci --frozen-lockfile
+
+    - name: 🔍 Frontend Lint
+      working-directory: ./frontend
+      run: npm run lint
+
+    - name: 🏗️ Frontend Build
+      working-directory: ./frontend
+      run: npm run build
+
+  docker-build:
+    name: 🐳 Docker Build Test
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    steps:
+    - name: 📥 Checkout
+      uses: actions/checkout@v4
+
+    - name: 🐳 Docker Build Backend
+      run: docker compose -f docker-compose.dev.yml build backend
+
+    - name: 🐳 Docker Build Frontend
+      run: docker compose -f docker-compose.dev.yml build frontend
