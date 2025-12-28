@@ -1,14 +1,22 @@
 {
   "name": "free-timesheet-pro-frontend",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.2.2",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 5173",
     "build": "vite build",
-    "preview": "vite preview"
+    "lint": "eslint . --ext js",
+    "lint:fix": "eslint . --ext js --fix",
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules package-lock.json dist && npm install"
   },
   "devDependencies": {
+    "eslint": "^9.9.0",
     "vite": "^6.4.1"
+  },
+  "overrides": {
+    "inflight": "^1.0.7",
+    "glob": "^10.0.0"
   }
 }

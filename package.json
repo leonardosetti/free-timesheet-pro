@@ -1,0 +1,30 @@
+{
+  "name": "free-timesheet-pro",
+  "version": "2.2.2",
+  "description": "FOSS Timesheet Pro - PWA PJ/Freelancer Tracker (100% Open Source)",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "build": "npm run build -w frontend && npm run build -w backend",
+    "test": "npm run test -w backend && npm run test -w frontend",
+    "lint": "npm run lint -w backend && npm run lint -w frontend",
+    "clean": "npm run clean -w backend && npm run clean -w frontend",
+    "docker:up": "docker compose -f docker-compose.dev.yml up --build -d",
+    "docker:down": "docker compose -f docker-compose.dev.yml down -v"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leonardosetti/free-timesheet-pro.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0 <21.0.0"
+  }
+}
